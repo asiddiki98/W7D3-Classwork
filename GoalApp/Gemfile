@@ -46,6 +46,7 @@ group :development, :test do
   gem 'factory_bot_rails' # generate model instances & save them to test DB
   gem 'rails-controller-testing' # provides helpful methods for testing
   gem 'pry-rails'
+  gem 'annotate'
 end
 
 group :development do
