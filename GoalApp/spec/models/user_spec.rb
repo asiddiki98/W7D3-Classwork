@@ -19,13 +19,11 @@ RSpec.describe User, type: :model do
     let!(:user) {create(:user)}
     context "valid_password" do
       it "should return true" do
-        puts user.username
         expect(user.is_password?("dragonball")).to be true
       end
     end
     context "invalid_password" do 
-      it "should return false" do 
-        puts user.username
+      it "should return false" do
         expect(user.is_password?("wrongpassword")).to be false
       end
     end
@@ -39,10 +37,23 @@ RSpec.describe User, type: :model do
       end
     end
     context "with invalid cred" do 
-        it "should return nil" do 
+      it "should return nil" do 
         expect(User.find_by_credentials(User.last.username, "wrongpasfd")).to eq nil
       end
     end
   end
+
+  describe "#reset_session_token!" do 
+    let!(:user) {create(:user)} 
+    context "when it works" do 
+      it "should return a new session token" do 
+        bob = User.last
+        old_session_token = bob.session_token
+        expect(bob.reset_session_token!).to_not eq(old_session_token)
+        expect(User.last.session_token).to_not eq(old_session_token)
+        expect(User.last.reset_session_token!).to eq(User.last.session_token)
+      end 
+    end 
+  end 
 
 end
