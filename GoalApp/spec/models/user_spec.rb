@@ -12,7 +12,37 @@ RSpec.describe User, type: :model do
       create(:user)
     end
     it { should validate_uniqueness_of(:username) }
-  end 
+    it {should validate_uniqueness_of(:session_token)}
+  end
 
+  describe "#is_password?" do
+    let!(:user) {create(:user)}
+    context "valid_password" do
+      it "should return true" do
+        puts user.username
+        expect(user.is_password?("dragonball")).to be true
+      end
+    end
+    context "invalid_password" do 
+      it "should return false" do 
+        puts user.username
+        expect(user.is_password?("wrongpassword")).to be false
+      end
+    end
+  end
+
+  describe "User::find_by_credentials" do
+    let!(:user) {create(:user)}
+    context "with valid cred" do 
+      it "should return user" do 
+        expect(User.find_by_credentials(User.last.username, "dragonball")).to eq User.last
+      end
+    end
+    context "with invalid cred" do 
+        it "should return nil" do 
+        expect(User.find_by_credentials(User.last.username, "wrongpasfd")).to eq nil
+      end
+    end
+  end
 
 end
